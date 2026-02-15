@@ -1,3 +1,7 @@
+package com.conorsheppard.entity;
+
+import com.conorsheppard.engine.HarmonicKeyMatcher;
+
 public class Song {
     private String fileName;
     private String title;

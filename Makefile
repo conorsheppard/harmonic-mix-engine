@@ -15,4 +15,4 @@ java-run:
 	java HarmonicKeyMatcher
 
 .SILENT:
-.PHONY: default compile run
+.PHONY: default compile run jbang-run java-run
