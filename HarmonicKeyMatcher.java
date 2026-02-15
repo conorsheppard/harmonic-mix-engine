@@ -118,36 +118,44 @@ public final class HarmonicKeyMatcher {
         Key relative = getRelativeKey(source);
         compatibleKeysList.add(relative);
 
-        Key dominant = pitchKey(source, +7);
+        Key dominant = pitchKey(source, +7); // e.g. C → G
         compatibleKeysList.add(dominant);
-        Key dominantRelative = getRelativeKey(dominant);
+
+        Key dominantRelative = getRelativeKey(dominant); // e.g. G → Em
         compatibleKeysList.add(dominantRelative);
 
-        Key subdominant = pitchKey(source, -7);
+        Key subdominant = pitchKey(source, -7); // e.g. C → F
         compatibleKeysList.add(subdominant);
-        Key subdominantRelative = getRelativeKey(subdominant);
+
+        Key subdominantRelative = getRelativeKey(subdominant); // F → Dm
         compatibleKeysList.add(subdominantRelative);
 
         Key relativeUpASt = pitchKey(relative, 1); // up a semitone, for pitching down
         Key relativeDownASt = pitchKey(relative, -1); // down a semitone, for pitching up
 
-        Key sourceUpASt = pitchKey(source, 1); // up a semitone, for pitching down
-        Key sourceDownASt = pitchKey(source, -1); // down a semitone, for pitching up
+        Key sourceUpASt = pitchKey(source, 1); // up a semitone, pitch down to mix
+        Key sourceDownASt = pitchKey(source, -1); // down a semitone, pitch up to mix
 
-        Key dominantUpASt = pitchKey(dominant, 1); // up a semitone, for pitching down
-        Key dominantDownASt = pitchKey(dominant, -1); // down a semitone, for pitching up
+        Key dominantUpASt = pitchKey(dominant, 1);
+        Key dominantDownASt = pitchKey(dominant, -1);
 
-        Key subdominantUpASt = pitchKey(subdominant, 1); // up a semitone, for pitching down
-        Key subdominantDownASt = pitchKey(subdominant, -1); // down a semitone, for pitching up
+        Key dominantRelativeUpASt = pitchKey(dominantRelative, 1);
+        Key dominantRelativeDownASt = pitchKey(dominantRelative, -1);
 
-        compatibleKeysList.addAll(
-                List.of(sourceUpASt, sourceDownASt, relativeUpASt, relativeDownASt, dominantUpASt, dominantDownASt,
-                        subdominantUpASt, subdominantDownASt));
+        Key subdominantUpASt = pitchKey(subdominant, 1);
+        Key subdominantDownASt = pitchKey(subdominant, -1);
+
+        Key subdominantRelativeUpASt = pitchKey(subdominantRelative, 1);
+        Key subdominantRelativeDownASt = pitchKey(subdominantRelative, -1);
+
+        compatibleKeysList.addAll(List.of(sourceUpASt, sourceDownASt, relativeUpASt, relativeDownASt,
+                dominantUpASt, dominantDownASt, subdominantUpASt, subdominantDownASt,
+                dominantRelativeUpASt, dominantRelativeDownASt, subdominantRelativeUpASt, subdominantRelativeDownASt));
 
         return compatibleKeysList;
     }
 
-    private static Key pitchKey(Key source, int transposeBySemitones) {
+    public static Key pitchKey(Key source, int transposeBySemitones) {
         return new Key(transpose(source.keyNum, transposeBySemitones), source.mode, source.preferFlats);
     }
 
