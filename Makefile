@@ -32,5 +32,8 @@ build:
 run:
 	docker run --rm --name harmonic-mix-engine -p 8080:8080 conorsheppard/harmonic-mix-engine
 
+k8s-init:
+	./scripts/k8s/kubes-init.sh
+
 .SILENT:
 .PHONY: default jbang-run-script compile java-run jbang-run test gradle-run build run

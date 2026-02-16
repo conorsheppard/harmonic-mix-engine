@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: harmonic-mix-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: harmonic-mix-engine
+  template:
+    metadata:
+      labels:
+        app: harmonic-mix-engine
+    spec:
+      containers:
+        - name: app
+          image: conorsheppard/harmonic-mix-engine:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SERVER_PORT
+              value: "8080"
