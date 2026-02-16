@@ -1,9 +1,12 @@
-package com.conorsheppard.engine;
+package com.conorsheppard.service;
+
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public final class HarmonicKeyMatcher {
 
     private static final int OCTAVE = 12;
@@ -33,14 +36,14 @@ public final class HarmonicKeyMatcher {
 
     // Parse formats like:
     // "C", "C major", "Cmaj", "C#m", "F# minor", "Bb", "Bb min", "G#m"
-    private static final Pattern KEY_PATTERN = Pattern.compile(
+    private final Pattern KEY_PATTERN = Pattern.compile(
             "^\\s*([A-Ga-g])\\s*([#b♯♭])?\\s*(maj(or)?|min(or)?|m)?\\s*$"
     );
 
-    private static final Map<String, Integer> NOTE_TO_PC = buildNoteToPc();
+    private final Map<String, Integer> NOTE_TO_PC = buildNoteToPc();
 
     // Pitch Class: https://en.wikipedia.org/wiki/Pitch_class
-    private static Map<String, Integer> buildNoteToPc() {
+    private Map<String, Integer> buildNoteToPc() {
         Map<String, Integer> m = new HashMap<>();
 
         // Sharps
@@ -71,8 +74,7 @@ public final class HarmonicKeyMatcher {
         return m;
     }
 
-    // Convenience
-    public static List<String> compatibleKeyStrings(String inputKey) {
+    public List<String> getCompatibleKeyStrings(String inputKey) {
         Key key = parseKey(inputKey);
         List<String> res = new ArrayList<>();
         for (Key k : compatibleKeys(key)) {
@@ -81,7 +83,7 @@ public final class HarmonicKeyMatcher {
         return res;
     }
 
-    public static Key parseKey(String input) {
+    public Key parseKey(String input) {
         Matcher matcher = KEY_PATTERN.matcher(input);
         if (!matcher.matches()) {
             throw new IllegalArgumentException("Unrecognised key format: " + input);
@@ -113,7 +115,7 @@ public final class HarmonicKeyMatcher {
         return new Key(pc, mode, preferFlats);
     }
 
-    public static List<Key> compatibleKeys(Key source) {
+    public List<Key> compatibleKeys(Key source) {
         List<Key> compatibleKeysList = new ArrayList<>();
 
         compatibleKeysList.add(source); // same key
@@ -157,24 +159,18 @@ public final class HarmonicKeyMatcher {
         return compatibleKeysList;
     }
 
-    public static Key pitchKey(Key source, int transposeBySemitones) {
+    public Key pitchKey(Key source, int transposeBySemitones) {
         return new Key(transpose(source.keyNum, transposeBySemitones), source.mode, source.preferFlats);
     }
 
-    private static Key getRelativeKey(Key source) {
+    private Key getRelativeKey(Key source) {
         int relShift = (source.mode == Mode.MAJOR) ? -3 : +3;
         Mode relMode = (source.mode == Mode.MAJOR) ? Mode.MINOR : Mode.MAJOR;
         return new Key(transpose(source.keyNum, relShift), relMode, source.preferFlats);
     }
 
-    private static int transpose(int keyNum, int transposeBySemitones) {
+    private int transpose(int keyNum, int transposeBySemitones) {
         int keyTransposed = (keyNum + transposeBySemitones) % OCTAVE;
         return keyTransposed < 0 ? keyTransposed + OCTAVE : keyTransposed; // pitch down guardrail
-    }
-
-    public static void main(String[] args) {
-        System.out.println(compatibleKeyStrings("Am"));
-        System.out.println(compatibleKeyStrings("Bb"));
-        System.out.println(compatibleKeyStrings("F# major"));
     }
 }

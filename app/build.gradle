@@ -1,21 +1,14 @@
 plugins {
-    id 'application'
+    id 'org.springframework.boot' version '3.3.8'
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'java'
 }
+
+group = 'com.conorsheppard'
+version = '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    implementation libs.guava
-}
-
-testing {
-    suites {
-        test {
-            useJUnitJupiter('5.11.1')
-        }
-    }
 }
 
 java {
@@ -24,6 +17,18 @@ java {
     }
 }
 
-application {
-    mainClass = 'app.src.main.java.com.conorsheppard.App'
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }

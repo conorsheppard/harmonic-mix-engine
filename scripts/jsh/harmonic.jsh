@@ -1,4 +1,4 @@
-import com.conorsheppard.engine.HarmonicKeyMatcher;
+import com.conorsheppard.service.HarmonicKeyMatcher;
 
 System.out.println("=== Harmonic Key Matcher Demo ===");
 System.out.println();

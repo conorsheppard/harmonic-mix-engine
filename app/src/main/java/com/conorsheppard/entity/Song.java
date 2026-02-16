@@ -1,6 +1,6 @@
 package com.conorsheppard.entity;
 
-import com.conorsheppard.engine.HarmonicKeyMatcher;
+import com.conorsheppard.service.HarmonicKeyMatcher;
 
 public class Song {
     private String fileName;
@@ -15,7 +15,7 @@ public class Song {
     public Song() {}
 
     public void shiftKey(int shiftBySemitones) {
-        currentKey = HarmonicKeyMatcher.pitchKey(currentKey, shiftBySemitones);
+        currentKey = new HarmonicKeyMatcher().pitchKey(currentKey, shiftBySemitones);
         currentBPM = currentBPM * playbackRatePercent(shiftBySemitones);
     }
 

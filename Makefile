@@ -7,7 +7,7 @@ PKG_DIR := com/conorsheppard/engine
 MAIN    := com.conorsheppard.engine.HarmonicKeyMatcher
 OUT_DIR := build/classes
 
-run:
+jbang-run-script:
 	jbang --cp=$(OUT_DIR) scripts/jsh/harmonic.jsh
 
 compile:
@@ -20,5 +20,11 @@ java-run: compile
 jbang-run:
 	jbang $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
 
+test:
+	./gradlew test
+
+run:
+	./gradlew bootRun
+
 .SILENT:
-.PHONY: default compile run jbang-run java-run
+.PHONY: default jbang-run-script compile java-run jbang-run test run
