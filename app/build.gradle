@@ -32,3 +32,9 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+bootJar {
+    archiveBaseName = 'harmonic-mix-engine'
+    archiveVersion = '1.0.0'
+}
+

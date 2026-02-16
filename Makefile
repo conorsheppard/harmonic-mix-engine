@@ -23,8 +23,14 @@ jbang-run:
 test:
 	./gradlew test
 
-run:
+gradle-run:
 	./gradlew bootRun
 
+build:
+	docker build --no-cache . -t conorsheppard/harmonic-mix-engine
+
+run:
+	docker run --rm --name harmonic-mix-engine -p 8080:8080 conorsheppard/harmonic-mix-engine
+
 .SILENT:
-.PHONY: default jbang-run-script compile java-run jbang-run test run
+.PHONY: default jbang-run-script compile java-run jbang-run test gradle-run build run
