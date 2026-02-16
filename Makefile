@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-default: run
+default: k8s-init
 
 SRC_DIR := app/src/main/java
 PKG_DIR := com/conorsheppard/engine
@@ -34,6 +34,10 @@ run:
 
 k8s-init:
 	./scripts/k8s/kubes-init.sh
+
+cleanup:
+	kubectl delete -f k8s/
+	minikube stop
 
 .SILENT:
 .PHONY: default jbang-run-script compile java-run jbang-run test gradle-run build run
