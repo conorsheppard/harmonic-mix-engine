@@ -4,7 +4,12 @@ set -e
 APP_NAME=harmonic-mix-engine
 NAMESPACE=default
 
-minikube start
+minikube start \
+  --driver=docker \
+  --cpus=2 \
+  --memory=1800m \
+  --addons= \
+  --extra-config=kubelet.housekeeping-interval=60s
 
 echo "Applying Kubernetes manifests..."
 kubectl apply -f k8s/

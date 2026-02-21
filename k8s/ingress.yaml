@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: harmonic-mix-engine
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /songs
+            pathType: Prefix
+            backend:
+              service:
+                name: harmonic-mix-engine
+                port:
+                  number: 8080
