@@ -2,9 +2,9 @@ SHELL := /bin/bash
 
 default: k8s-init
 
-SRC_DIR := app/src/main/java
-PKG_DIR := com/conorsheppard/engine
-MAIN    := com.conorsheppard.engine.HarmonicKeyMatcher
+SRC_DIR := backend/src/main/java
+PKG_DIR := com/conorsheppard/service
+MAIN    := com.conorsheppard.service.HarmonicKeyMatcher
 OUT_DIR := build/classes
 
 jbang-run-script:
@@ -27,10 +27,12 @@ gradle-run:
 	./gradlew bootRun
 
 build:
-	docker build --no-cache . -t conorsheppard/harmonic-mix-engine
+	docker build --no-cache -f backend/Dockerfile -t conorsheppard/harmonic-mix-engine .
 
-run:
-	docker run --rm --name harmonic-mix-engine -p 8080:8080 conorsheppard/harmonic-mix-engine
+build-frontend:
+	docker build --no-cache frontend/ -t conorsheppard/harmonic-mix-engine-frontend
+
+build-all: build build-frontend
 
 k8s-init:
 	./scripts/k8s/kubes-init.sh
@@ -40,4 +42,4 @@ cleanup:
 	minikube stop
 
 .SILENT:
-.PHONY: default jbang-run-script compile java-run jbang-run test gradle-run build run
+.PHONY: default jbang-run-script compile java-run jbang-run test gradle-run build build-frontend build-all k8s-init cleanup

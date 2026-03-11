@@ -5,3 +5,9 @@
 
 # Ignore Gradle build output directory
 build
+
+# Node / Next.js
+node_modules
+.next
+out
+.env*.local

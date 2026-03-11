@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: harmonic-mix-engine-frontend
+spec:
+  selector:
+    app: harmonic-mix-engine-frontend
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP
