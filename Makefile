@@ -2,9 +2,9 @@ SHELL := /bin/bash
 
 default: k8s-init
 
-SRC_DIR := backend/src/main/java
-PKG_DIR := com/conorsheppard/service
-MAIN    := com.conorsheppard.service.HarmonicKeyMatcher
+SRC_DIR := scripts
+PKG_DIR := jsh
+MAIN    := scripts.jsh.HarmonicKeyMatcher
 OUT_DIR := build/classes
 
 jbang-run-script:
