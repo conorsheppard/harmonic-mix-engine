@@ -32,6 +32,12 @@ build:
 build-frontend:
 	docker build --no-cache frontend/ -t conorsheppard/harmonic-mix-engine-frontend
 
+npm-install:
+	[ -d frontend ] && cd frontend && npm install || npm install
+
+next-run:
+	[ -d frontend ] && cd frontend && npm run dev || npm run dev
+
 build-all: build build-frontend
 
 k8s-init:

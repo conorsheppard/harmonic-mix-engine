@@ -1,0 +1,110 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 560px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.select {
+  flex: 1;
+  min-width: 180px;
+  height: 40px;
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--button-secondary-border, #ebebeb);
+  border-radius: 8px;
+  background: var(--background, #fff);
+  color: var(--text-primary, #000);
+  font-size: 14px;
+  font-family: var(--font-geist-sans), sans-serif;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+}
+
+.button {
+  height: 40px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 128px;
+  background: var(--text-primary, #000);
+  color: var(--background, #fff);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-geist-sans), sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--button-primary-hover, #383838);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #e53e3e;
+  font-size: 14px;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.resultsTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary, #000);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 128px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-geist-mono), monospace;
+  background: var(--button-secondary-hover, #f2f2f2);
+  color: var(--text-primary, #000);
+  border: 1px solid var(--button-secondary-border, #ebebeb);
+}
+
+@media (prefers-color-scheme: dark) {
+  .select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ededed' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  }
+}
+
+@media (max-width: 600px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
