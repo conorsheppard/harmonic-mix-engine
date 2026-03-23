@@ -4,7 +4,7 @@ default: k8s-init
 
 SRC_DIR := scripts
 PKG_DIR := jsh
-MAIN    := scripts.jsh.HarmonicKeyMatcher
+MAIN    := scripts/jsh/HarmonicKeyMatcher
 OUT_DIR := build/classes
 
 jbang-run-script:
