@@ -1,11 +1,11 @@
 SHELL := /bin/bash
 
-default: k8s-init
-
 SRC_DIR := scripts
 PKG_DIR := jsh
 MAIN    := scripts/jsh/HarmonicKeyMatcher
 OUT_DIR := build/classes
+
+default: k8s-init
 
 jbang-run-script:
 	jbang --cp=$(OUT_DIR) scripts/jsh/harmonic.jsh

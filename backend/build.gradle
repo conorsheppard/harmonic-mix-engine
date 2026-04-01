@@ -38,3 +38,8 @@ bootJar {
     archiveVersion = '1.0.0'
 }
 
+task printClasspath {
+    doLast {
+        println configurations.compileClasspath.asPath
+    }
+}

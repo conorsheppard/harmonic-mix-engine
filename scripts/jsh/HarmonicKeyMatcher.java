@@ -1,4 +1,4 @@
-package com.conorsheppard.engine;
+package scripts.jsh;
 
 import java.util.*;
 import java.util.regex.Matcher;
