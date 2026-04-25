@@ -20,6 +20,9 @@ java-run: compile
 jbang-run:
 	jbang $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
 
+jshell-init:
+	./scripts/jsh/jshell-init.sh
+
 test:
 	./gradlew test
 
@@ -47,5 +50,14 @@ cleanup:
 	kubectl delete -f k8s/
 	minikube stop
 
+minikube-reset:
+	minikube delete
+	minikube start
+
+write-classpath:
+	./gradlew :backend:printClasspath -q | pbcopy
+	unixify-path
+	pbpaste > classpath.txt
+
 .SILENT:
-.PHONY: default jbang-run-script compile java-run jbang-run test gradle-run build build-frontend build-all k8s-init cleanup
+.PHONY: default jbang-run-script compile java-run jbang-run jshell-init test gradle-run build build-frontend npm-install next-run build-all k8s-init cleanup minikube-reset write-classpath

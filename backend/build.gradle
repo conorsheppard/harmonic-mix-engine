@@ -35,11 +35,11 @@ tasks.named('test') {
 
 bootJar {
     archiveBaseName = 'harmonic-mix-engine'
-    archiveVersion = '1.0.0'
 }
 
 task printClasspath {
+    def cp = configurations.compileClasspath
     doLast {
-        println configurations.compileClasspath.asPath
+        println cp.asPath
     }
 }
