@@ -3,7 +3,7 @@
 gradle_cp="$(./gradlew :backend:printClasspath -q)"
 
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
-    classpath="${gradle_cp};build/classes"
+    classpath="${gradle_cp};build\classes"
 else
     classpath="${gradle_cp}:build/classes"
 fi

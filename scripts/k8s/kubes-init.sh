@@ -24,8 +24,8 @@ ensure_image() {
 
   if docker image inspect "$image" > /dev/null 2>&1; then
     echo "Image $image found locally, skipping build."
-  elif docker pull "$image" > /dev/null 2>&1; then
-    echo "Image $image pulled from remote."
+  # elif docker pull "$image" > /dev/null 2>&1; then
+  #   echo "Image $image pulled from remote."
   else
     echo "Building $image..."
     eval "$build_cmd"
