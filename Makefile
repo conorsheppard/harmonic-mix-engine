@@ -8,17 +8,6 @@ MAIN    := HarmonicKeyMatcher
 OUT_DIR := build/classes
 BACKEND_CLASSES := backend/build/classes/java/main
 
-# Java's classpath separator is ';' on Windows and ':' elsewhere.
-# Check $(OS) and uname so this works whether make sees the env var or only the shell.
-UNAME_S := $(shell uname -s 2>/dev/null)
-ifeq ($(OS),Windows_NT)
-  CPSEP := ;
-else ifneq (,$(filter MINGW% CYGWIN% MSYS%,$(UNAME_S)))
-  CPSEP := ;
-else
-  CPSEP := :
-endif
-
 default: k8s-init
 
 gradle-compile:
@@ -32,7 +21,11 @@ compile: gradle-compile
 	javac -d $(OUT_DIR) -cp $(BACKEND_CLASSES) $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
 
 java-run: compile
-	java -cp "$(OUT_DIR)$(CPSEP)$(BACKEND_CLASSES)" $(MAIN)
+	cpsep=$$(uname -s | grep -qE 'MINGW|CYGWIN|MSYS' && echo ';' || echo ':')
+	java -cp "$(OUT_DIR)$${cpsep}$(BACKEND_CLASSES)" $(MAIN)
+
+java-single-file-mode: gradle-compile
+	java -cp $(BACKEND_CLASSES) $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
 
 jbang-run:
 	jbang $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
