@@ -3,4 +3,4 @@ plugins {
 }
 
 rootProject.name = 'harmonic-mix-engine'
-include('app')
+include('backend')
