@@ -1,21 +1,31 @@
 SHELL := /bin/bash
 
+export GRADLE_OPTS := --enable-native-access=ALL-UNNAMED
+
 SRC_DIR := scripts
 PKG_DIR := jsh
-MAIN    := scripts/jsh/HarmonicKeyMatcher
+MAIN    := HarmonicKeyMatcher
 OUT_DIR := build/classes
+BACKEND_CLASSES := backend/build/classes/java/main
 
 default: k8s-init
 
-jbang-run-script:
-	jbang --cp=$(OUT_DIR) scripts/jsh/harmonic.jsh
+gradle-compile:
+	./gradlew :backend:compileJava -q
 
-compile:
+jbang-run-script: gradle-compile
+	jbang --cp=$(BACKEND_CLASSES) scripts/jsh/harmonic.jsh
+
+compile: gradle-compile
 	mkdir -p $(OUT_DIR)
-	javac -d $(OUT_DIR) $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
+	javac -d $(OUT_DIR) -cp $(BACKEND_CLASSES) $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
 
 java-run: compile
-	java -cp $(OUT_DIR) $(MAIN)
+	cpsep=$$(uname -s | grep -qE 'MINGW|CYGWIN|MSYS' && echo ';' || echo ':')
+	java -cp "$(OUT_DIR)$${cpsep}$(BACKEND_CLASSES)" $(MAIN)
+
+java-single-file-mode: gradle-compile
+	java -cp $(BACKEND_CLASSES) $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
 
 jbang-run:
 	jbang $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
