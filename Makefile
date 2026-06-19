@@ -16,9 +16,6 @@ gradle-compile:
 jbang-run-script: gradle-compile
 	jbang --cp=$(BACKEND_CLASSES) scripts/jsh/harmonic.jsh
 
-test-jbang-run-script:
-	./scripts/test/test-jbang-run-script.sh
-
 compile: gradle-compile
 	mkdir -p $(OUT_DIR)
 	javac -d $(OUT_DIR) -cp $(BACKEND_CLASSES) $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
@@ -39,6 +36,14 @@ jshell-init:
 test:
 	./gradlew test
 
+test-jbang-run-script:
+	./scripts/test/test-jbang-run-script.sh
+
+test-java-single-file-mode:
+	./scripts/test/test-java-single-file-mode.sh
+
+test-script-targets: test-java-single-file-mode test-jbang-run-script
+	
 gradle-run:
 	./gradlew bootRun
 
@@ -73,4 +78,4 @@ write-classpath:
 	pbpaste > classpath.txt
 
 .SILENT:
-.PHONY: default jbang-run-script test-jbang-run-script compile java-run jbang-run jshell-init test gradle-run build build-frontend npm-install next-run build-all k8s-init cleanup minikube-reset write-classpath
+.PHONY: default jbang-run-script test-jbang-run-script compile java-run jbang-run java-single-file-mode test-java-single-file-mode jshell-init test gradle-run build build-frontend npm-install next-run build-all k8s-init cleanup minikube-reset write-classpath
