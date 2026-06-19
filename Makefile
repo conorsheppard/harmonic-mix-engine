@@ -21,7 +21,7 @@ compile: gradle-compile
 	javac -d $(OUT_DIR) -cp $(BACKEND_CLASSES) $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
 
 java-run: compile
-	cpsep=$$(uname -s | grep -qE 'MINGW|CYGWIN|MSYS' && echo ';' || echo ':')
+	cpsep=$$(uname -s | grep -qE 'MINGW|CYGWIN|MSYS' && echo ';' || echo ':') && \
 	java -cp "$(OUT_DIR)$${cpsep}$(BACKEND_CLASSES)" $(MAIN)
 
 java-single-file-mode: gradle-compile
