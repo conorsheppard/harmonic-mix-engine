@@ -42,7 +42,10 @@ test-jbang-run-script:
 test-java-single-file-mode:
 	./scripts/test/test-java-single-file-mode.sh
 
-test-script-targets: test-java-single-file-mode test-jbang-run-script
+test-jbang-run:
+	./scripts/test/test-jbang-run.sh
+
+test-make-target-test-scripts: test-java-single-file-mode test-jbang-run-script test-jbang-run
 	
 gradle-run:
 	./gradlew bootRun
@@ -78,4 +81,4 @@ write-classpath:
 	pbpaste > classpath.txt
 
 .SILENT:
-.PHONY: default jbang-run-script test-jbang-run-script compile java-run jbang-run java-single-file-mode test-java-single-file-mode jshell-init test gradle-run build build-frontend npm-install next-run build-all k8s-init cleanup minikube-reset write-classpath
+.PHONY: default jbang-run-script test-jbang-run-script compile java-run jbang-run test-jbang-run java-single-file-mode test-java-single-file-mode test-script-targets jshell-init test gradle-run build build-frontend npm-install next-run build-all k8s-init cleanup minikube-reset write-classpath
