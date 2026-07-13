@@ -1,0 +1,29 @@
+name: Make target test scripts
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-make-target-test-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up jbang
+        uses: jbangdev/setup-jbang@main
+
+      - name: Make scripts executable
+        run: chmod +x gradlew scripts/test/*.sh
+
+      - name: Run make target test scripts
+        run: make test-make-target-test-scripts
