@@ -34,9 +34,11 @@ if [[ $MAKE_STATUS -ne 0 ]]; then
   exit 1
 fi
 
-# Keep only the bracketed key-list lines, dropping the incubator-module WARNING
-# and recursive-make's "Entering/Leaving directory" chatter.
-ACTUAL="$(printf '%s\n' "$RAW_OUTPUT" | grep -E '^\[')"
+# Keep only the bracketed key-list lines (each starts with a note name A-G),
+# dropping jbang's "[jbang] Resolving dependencies..." progress lines (printed
+# on a cold dependency cache, e.g. CI), the incubator-module WARNING, and
+# recursive-make's "Entering/Leaving directory" chatter.
+ACTUAL="$(printf '%s\n' "$RAW_OUTPUT" | grep -E '^\[[A-G]')"
 
 if [[ "$ACTUAL" == "$EXPECTED" ]]; then
   echo "PASS: jbang-run output matches the expected result."
