@@ -21,7 +21,7 @@ compile: gradle-compile
 	javac -d $(OUT_DIR) -cp $(BACKEND_CLASSES) $(SRC_DIR)/$(PKG_DIR)/HarmonicKeyMatcher.java
 
 java-run: compile
-	cpsep=$$(uname -s | grep -qE 'MINGW|CYGWIN|MSYS' && echo ';' || echo ':')
+	cpsep=$$(uname -s | grep -qE 'MINGW|CYGWIN|MSYS' && echo ';' || echo ':') && \
 	java -cp "$(OUT_DIR)$${cpsep}$(BACKEND_CLASSES)" $(MAIN)
 
 java-single-file-mode: gradle-compile
@@ -36,6 +36,20 @@ jshell-init:
 test:
 	./gradlew test
 
+test-jbang-run-script:
+	./scripts/test/test-jbang-run-script.sh
+
+test-java-single-file-mode:
+	./scripts/test/test-java-single-file-mode.sh
+
+test-jbang-run:
+	./scripts/test/test-jbang-run.sh
+
+test-java-run:
+	./scripts/test/test-java-run.sh
+
+test-make-target-test-scripts: test-java-single-file-mode test-jbang-run-script test-jbang-run test-java-run
+	
 gradle-run:
 	./gradlew bootRun
 
@@ -70,4 +84,4 @@ write-classpath:
 	pbpaste > classpath.txt
 
 .SILENT:
-.PHONY: default jbang-run-script compile java-run jbang-run jshell-init test gradle-run build build-frontend npm-install next-run build-all k8s-init cleanup minikube-reset write-classpath
+.PHONY: default jbang-run-script test-jbang-run-script compile java-run test-java-run jbang-run test-jbang-run java-single-file-mode test-java-single-file-mode test-make-target-test-scripts jshell-init test gradle-run build build-frontend npm-install next-run build-all k8s-init cleanup minikube-reset write-classpath
