@@ -70,6 +70,9 @@ build-all: build build-frontend
 k8s-init:
 	./scripts/k8s/kubes-init.sh
 
+azure-vm-up:
+	./scripts/k8s/azure-vm-init.sh
+
 cleanup:
 	kubectl delete -f k8s/
 	minikube stop
@@ -84,4 +87,4 @@ write-classpath:
 	pbpaste > classpath.txt
 
 .SILENT:
-.PHONY: default jbang-run-script test-jbang-run-script compile java-run test-java-run jbang-run test-jbang-run java-single-file-mode test-java-single-file-mode test-make-target-test-scripts jshell-init test gradle-run build build-frontend npm-install next-run build-all k8s-init cleanup minikube-reset write-classpath
+.PHONY: default jbang-run-script test-jbang-run-script compile java-run test-java-run jbang-run test-jbang-run java-single-file-mode test-java-single-file-mode test-make-target-test-scripts jshell-init test gradle-run build build-frontend npm-install next-run build-all k8s-init azure-vm-up cleanup minikube-reset write-classpath

@@ -1,0 +1,64 @@
+#cloud-config
+# Rendered by Terraform (templatefile). Terraform interpolations use single
+# dollar + braces; a literal dollar-brace destined for bash is written doubled
+# so it survives rendering. All other shell dollar signs are left single.
+package_update: true
+package_upgrade: false
+
+packages:
+  - make
+  - git
+  - nginx
+  - ca-certificates
+  - curl
+  - gnupg
+
+write_files:
+  - path: /opt/harmonic-bootstrap.sh
+    permissions: "0755"
+    owner: root:root
+    content: |
+      #!/bin/bash
+      # First-boot bootstrap: installs Docker/Minikube/kubectl, clones the repo,
+      # and brings the cluster up behind Nginx via `make azure-vm-up`.
+      set -euxo pipefail
+
+      ADMIN_USER="${admin_username}"
+      REPO_URL="${git_repo_url}"
+      REPO_BRANCH="${git_branch}"
+
+      # --- Docker (official apt repo) ---
+      install -m 0755 -d /etc/apt/keyrings
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+        | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+      chmod a+r /etc/apt/keyrings/docker.gpg
+      echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $${VERSION_CODENAME}) stable" \
+        > /etc/apt/sources.list.d/docker.list
+      apt-get update
+      apt-get install -y docker-ce docker-ce-cli containerd.io \
+        docker-buildx-plugin docker-compose-plugin
+      usermod -aG docker "$ADMIN_USER"
+
+      # --- Minikube ---
+      curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+      install minikube-linux-amd64 /usr/local/bin/minikube
+      rm -f minikube-linux-amd64
+
+      # --- kubectl ---
+      curl -LO "https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      rm -f kubectl
+
+      # --- Clone repo as the admin user ---
+      install -d -o "$ADMIN_USER" -g "$ADMIN_USER" "/home/$ADMIN_USER/development"
+      sudo -u "$ADMIN_USER" -H git clone --branch "$REPO_BRANCH" "$REPO_URL" \
+        "/home/$ADMIN_USER/development/harmonic-mix-engine"
+
+      # --- Bring up cluster + Nginx as the admin user (needs docker group) ---
+      # `sg docker` gives the freshly-added group membership without a re-login.
+      sudo -u "$ADMIN_USER" -H sg docker -c \
+        "cd /home/$ADMIN_USER/development/harmonic-mix-engine && make azure-vm-up"
+
+runcmd:
+  - /opt/harmonic-bootstrap.sh

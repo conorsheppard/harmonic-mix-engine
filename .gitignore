@@ -13,3 +13,14 @@ out
 .env*.local
 
 classpath.txt
+
+# Terraform (keep .terraform.lock.hcl committed for reproducible provider versions)
+terraform/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+
+# SSH private keys (retrieved from Terraform state locally)
+.priv/*.pem
